@@ -12,24 +12,24 @@ Aquí puedes ver el flujo de la aplicación.
 | Inicio de Sesión | ![Inicio de Sesión](images/login.png) |
 | Catálogo y Filtros | ![Vista del catálogo con filtros de marca y Tipo activos](images/catalogo.png) |
 | Carrito y Resumen | ![Resumen del pedido](images/producto_agregado.png) |
-| Programar Instalación | ![Formulario para seleccionar la fecha/hora de instalación](images/form_Instalacion.png) |
+| Programar Instalación | ![Formulario para seleccionar la fecha/hora de instalación](images/form_instalacion.png) |
 | Confirmación de Compra | ![Mensaje de confirmacion del pedido con estado CONFIRMADO](images/compra_finalizada.png) |
 
 ## Características Principales
 
-* **Catálogo Avanzado:** Permite navegar y filtrar productos de manera **dinámica y persistente**.
-* **Filtrado Múltiple:** Búsqueda por texto (parcial), precio, marca (GENERIC, HIKVISION, DAHUA), y tipo de cámara (IP/Analógica).
-* **Servicio de Instalación:** Flujo de *checkout* que permite al usuario añadir el costo de instalación y programar la fecha y hora del servicio.
-* **Seguridad:** Autenticación de usuarios y control de acceso mediante Spring Security.
+* Catálogo Avanzado:** Permite navegar y filtrar productos de manera **dinámica y persistente**.
+* Filtrado Múltiple:** Búsqueda por texto (parcial), precio, marca (GENERIC, HIKVISION, DAHUA), y tipo de cámara (IP/Analógica).
+* Servicio de Instalación:** Flujo de *checkout* que permite al usuario añadir el costo de instalación y programar la fecha y hora del servicio.
+* Seguridad:** Autenticación de usuarios y control de acceso mediante Spring Security.
 
 ## STACK TECNOLÓGICO
 
 | Componente | Tecnología | Notas |
 | :--- | :--- | :--- |
-| **Backend Core** | Java | 17/21 |
-| **Framework** | Spring Boot | 3+ (con Spring Data JPA) |
-| **Base de Datos** | PostgreSQL | Usada para persistencia de productos, pedidos y usuarios. |
-| **Frontend** | Thymeleaf | Motor de plantillas para renderizado del lado del servidor (SSR). |
+| Backend Core | **Java** | 17/21 |
+| Framework | **Spring Boot** | 3+ (con Spring Data JPA) |
+| Base de Datos | **PostgreSQL** | Usada para persistencia de productos, pedidos y usuarios. |
+| Frontend | **Thymeleaf** | Motor de plantillas para renderizado del lado del servidor (SSR). |
 
 ## CONFIGURACIÓN E INSTALACIÓN
 
