@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> 
+<head>
+    <title>Programar Instalación</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    
+    <div th:replace="fragments/header :: main-header"></div> 
+    
+    <div class="catalogo-contenedor">
+        
+        <h2 style="border-bottom: 2px solid #ccc; padding-bottom: 10px;">
+            <i class="fas fa-calendar-check"></i> Programar Instalación a Domicilio
+        </h2>
+        
+        <p th:if="${errorMessage}" class="alert-error" th:text="${errorMessage}"></p>
+        
+        <div class="installation-layout">
+            
+            <div class="summary-box">
+                <h4>Detalles de la Cita</h4>
+                
+                <div class="summary-line">
+                    <span>Costo del Servicio:</span>
+                    <span class="price-value">ARS$ <span th:text="${installationPrice}">50.0</span></span>
+                </div>
+                
+                <div class="summary-line">
+                    <span>Horario Permitido:</span>
+                    <span th:text="${workingHours}" style="font-weight: bold;">8:00 - 15:00 hs (Lunes a Sábado)</span>
+                </div>
+                
+                <p class="working-hours-note">
+                    <i class="fas fa-info-circle"></i> La instalación se programará a partir del día siguiente a la fecha de compra.
+                </p>
+            </div>
+
+            <div class="installation-form-container">
+                
+                <form th:action="@{/orders/installation/confirm}" 
+                      th:object="${installationRequest}" method="POST" 
+                      class="form-modern">
+                    
+                    <div class="form-group">
+                        <label for="address"><i class="fas fa-map-marker-alt"></i> Dirección de Instalación:</label>
+                        <input type="text" id="address" th:field="*{address}" 
+                               class="form-control" placeholder="Calle, número, piso, depto." required>
+                        <div th:if="${#fields.hasErrors('address')}" 
+                             th:errors="*{address}" class="validation-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desiredDate"><i class="fas fa-calendar-day"></i> Fecha Deseada:</label>
+                        <input type="date" id="desiredDate" th:field="*{desiredDate}" 
+                               th:min="${minDate}" class="form-control" required>
+                        <div th:if="${#fields.hasErrors('desiredDate')}" 
+                             th:errors="*{desiredDate}" class="validation-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desiredTime"><i class="fas fa-clock"></i> Hora Deseada (8:00 a 15:00):</label>
+                        <input type="time" id="desiredTime" th:field="*{desiredTime}"
+                               min="08:00" max="15:00" step="3600" class="form-control" required>
+                        <div th:if="${#fields.hasErrors('desiredTime')}" 
+                             th:errors="*{desiredTime}" class="validation-error"></div>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-full-width">
+                        <i class="fas fa-check-circle"></i> Confirmar Horario y Dirección
+                    </button>
+                    
+                    <a th:href="@{/orders/cart}" class="btn-secondary-link">
+                        ← Cancelar y volver al carrito
+                    </a>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> 
+<head>
+    <title>Programar Instalación</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    
+    <div th:replace="fragments/header :: main-header"></div> 
+    
+    <div class="catalogo-contenedor">
+        <h1>Programar Instalación a Domicilio</h1>
+        
+        <p th:if="${errorMessage}" class="alert-error" th:text="${errorMessage}"></p>
+
+        <form th:action="@{/orders/installation/confirm}" th:object="${installationRequest}" method="POST">
+            
+            <p>Costo del servicio: **ARS$ <span th:text="${installationPrice}"></span>**</p>
+            <p>Horario Permitido: <span style="font-weight: bold;" th:text="${workingHours}"></span></p>
+
+            <div>
+                <label for="address">Dirección de Instalación:</label>
+                <input type="text" id="address" th:field="*{address}" required>
+                <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color: red; font-size: 0.9em;"></span>
+            </div>
+            
+            <div>
+                <label for="desiredDate">Fecha Deseada:</label>
+                <input type="date" id="desiredDate" th:field="*{desiredDate}" th:min="${minDate}" required>
+            </div>
+            
+            <div>
+                <label for="desiredTime">Hora Deseada (8:00 a 15:00):</label>
+                <input type="time" id="desiredTime" th:field="*{desiredTime}"
+                       min="08:00" max="15:00" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Confirmar Horario y Dirección</button>
+        </form>
+        
+        <p style="margin-top: 15px;"><a th:href="@{/orders/cart}">← Cancelar y volver al carrito</a></p>
+        
+    </div>
+</body>
+</html>

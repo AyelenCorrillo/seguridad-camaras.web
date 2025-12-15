@@ -1,0 +1,28 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### VS Code ###
+.vscode/
+
+# Sección para archivos de configuracion sensibles
+/src/main/resources/application.properties
+
+# -----------------------------------------------
+# 4. ARCHIVOS DE EJECUCIÓN/LOGS
+# -----------------------------------------------
+# Logs
+*.log
+log/
+tmp/
+*.tmp
+
+# -----------------------------------------------
+# 5. GENERADOS POR EL SISTEMA OPERATIVO
+# -----------------------------------------------
+.DS_Store
+Thumbs.db
+
+

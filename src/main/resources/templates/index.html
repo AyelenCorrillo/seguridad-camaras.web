@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Bienvenido | Seguridad Cámaras Web</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    
+    <header style="text-align: center; padding: 50px; background-color: #007bff; color: white;">
+        <h1>🛡️ Soluciones de Vigilancia para tu Hogar y Negocio 🛡️</h1>
+        <p>Tu seguridad es nuestra prioridad. Explora nuestro catálogo de cámaras IP y Analógicas.</p>
+    </header>
+    
+    <div style="max-width: 800px; margin: 50px auto; padding: 20px; text-align: center;">
+        
+        <div sec:authorize="!isAuthenticated()">
+            <h2>¡Empieza a Comprar!</h2>
+            <p>Necesitas iniciar sesión o registrarte para ver precios y añadir productos al carrito.</p>
+            
+            <a th:href="@{/login}" 
+               style="padding: 10px 20px; background-color: #28a745; color: white; border-radius: 5px; text-decoration: none; margin-right: 15px;">
+               Iniciar Sesión
+            </a>
+            
+            <a th:href="@{/register}" 
+               style="padding: 10px 20px; background-color: #ffc107; color: #333; border-radius: 5px; text-decoration: none;">
+               Registrarse Ahora
+            </a>
+        </div>
+        
+        <div sec:authorize="isAuthenticated()">
+            <h2>¡Bienvenido de Nuevo!</h2>
+            <p>Puedes empezar a gestionar tus pedidos o explorar el catálogo.</p>
+            
+            <a th:href="@{/catalogo}" 
+               style="padding: 10px 20px; background-color: #007bff; color: white; border-radius: 5px; text-decoration: none;">
+               Ir al Catálogo de Cámaras
+            </a>
+        </div>
+        
+    </div>
+    
+</body>
+</html>

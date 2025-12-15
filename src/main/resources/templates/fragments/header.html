@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Fragmento de Cabecera</title>
+    </head>
+<body>
+    <header th:fragment="main-header">
+        <div class="header-content">
+            <h1>Catálogo de Cámaras de Seguridad</h1>
+            <div class="user-info-bar" sec:authorize="isAuthenticated()">
+                <p>Bienvenido, <span sec:authentication="name"></span>! | 
+                    <a th:href="@{/orders/cart}">🛒 Ver Carrito</a> | 
+                    <form th:action="@{/logout}" method="post" style="display:inline;">
+                        <button type="submit" style="background:none; border:none; color:#007bff; padding:0; cursor:pointer; font-size:0.9em; text-decoration:underline;">
+                            Salir
+                        </button>
+                    </form>
+                </p>
+            </div>
+            <div class="user-info-bar" sec:authorize="!isAuthenticated()">
+                <p><a th:href="@{/login}">Iniciar Sesión</a> | <a th:href="@{/register}">Registrarse</a></p>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

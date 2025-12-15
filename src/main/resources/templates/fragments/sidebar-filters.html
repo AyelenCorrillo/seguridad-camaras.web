@@ -1,0 +1,63 @@
+<div class="filtros-sidebar" th:fragment="sidebar-filters">
+    
+    <h2>Filtros</h2>
+
+    <form th:action="@{/catalogo}" method="get" id="filtroLateralForm">
+        
+        <input type="hidden" name="busqueda" th:value="${busquedaActual}">
+        <input type="hidden" name="ordenar" th:value="${ordenarActual}">
+        
+        <input type="hidden" name="minPrice" th:value="${minPriceActual}">
+        <input type="hidden" name="maxPrice" th:value="${maxPriceActual}">
+
+        <div class="filtro-group">
+            <h4>Tipo de Cámara</h4>
+            
+            <div th:each="type : ${productTypes}" class="checkbox-container">
+                <input type="radio" name="tipo" th:id="${'type-' + type.name()}" th:value="${type.name()}" 
+                        th:checked="${type.name() == tipoActual}"
+                        onchange="document.getElementById('filtroLateralForm').submit()">
+                <label th:for="${'type-' + type.name()}" th:text="${type.name()}"></label>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="radio" name="tipo" id="type-all" value="Todos" 
+                        th:checked="${tipoActual == 'Todos' or tipoActual == null or tipoActual == ''}" 
+                        onchange="document.getElementById('filtroLateralForm').submit()">
+                <label for="type-all">Mostrar Todos</label>
+            </div>
+        </div>
+
+        <div class="filtro-group">
+            <h4>Marca</h4>
+            
+            <div th:each="marca : ${availableBrands}" class="checkbox-container">
+                <input type="radio" name="brand" th:id="${'brand-' + marca}" th:value="${marca}" 
+                        th:checked="${brandActual != null and brandActual == marca}" 
+                        onchange="document.getElementById('filtroLateralForm').submit()">
+                <label th:for="${'brand-' + marca}" th:text="${marca}"></label>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="radio" name="brand" id="brand-all" value="" 
+                        th:checked="${brandActual == null}" 
+                        onchange="document.getElementById('filtroLateralForm').submit()">
+                <label for="brand-all">Todas las Marcas</label>
+            </div>
+        </div>
+
+        <div class="filtro-group">
+            <h4>Rango de Precio (ARS$)</h4>
+            <div class="filtro-input-group">
+                <input type="number" name="minPrice" placeholder="Mínimo ARS" 
+                        th:value="${minPriceActual !=null ? #numbers.formatDecimal(minPriceActual, 0, 'POINT', 0, 'COMMA') : ''}" 
+                        step="1">
+                <input type="number" name="maxPrice" placeholder="Máximo ARS" 
+                        th:value="${maxPriceActual != null ? #numbers.formatDecimal(maxPriceActual, 0, 'POINT', 0, 'COMMA') : ''}" 
+                        step="1">
+            </div>
+            <button type="submit" class="btn-primary" style="width: 100%;">Aplicar Precio</button>
+        </div>
+        
+    </form>
+</div>

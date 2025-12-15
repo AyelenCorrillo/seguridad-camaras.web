@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> 
+</head>
+<body>
+    
+    <div th:replace="fragments/header :: main-header"></div>
+    
+    <div class="catalogo-contenedor">
+        
+        <p th:if="${errorMessage}" class="alert-error" th:text="${errorMessage}"></p>
+        <p th:if="${successMessage}" class="alert-success" th:text="${successMessage}"></p>
+
+        <h2>🛒 Tu Carrito de Compras (Pedido #<span th:text="${order.id}"></span>)</h2>
+        
+        <div th:if="${order.orderDetails.isEmpty()}" class="empty-cart">
+            <p>Tu carrito está vacío. ¡Añade productos desde el <a th:href="@{/catalogo}">catálogo</a>!</p>
+        </div>
+
+        <div th:unless="${order.orderDetails.isEmpty()}" class="cart-layout">
+            
+            <div class="cart-items">
+                <div th:each="detail : ${order.orderDetails}" class="cart-item-card">
+                    
+                    <div class="item-img">
+                        <img th:src="@{/images/products/{id}.jpg(id=${detail.product.id})}" 
+                             th:alt="${detail.product.name}">
+                    </div>
+                    
+                    <div class="item-info">
+                        <h4 th:text="${detail.product.name}">Cámara IP</h4>
+                        <p class="item-price">Precio Unitario: ARS$ <span 
+                            th:text="${#numbers.formatDecimal(detail.unitPrice, 0, 'POINT', 2, 'COMMA')}"></span></p>
+                        <p>Stock: <span th:text="${detail.product.stock}"></span></p>
+                        
+                        <p>Cantidad: <span th:text="${detail.quantity}"></span></p>
+                    </div>
+
+                    <div class="item-subtotal">
+                        <p>Subtotal</p>
+                        <p class="total-price">ARS$ <span 
+                            th:text="${#numbers.formatDecimal(detail.total, 0, 'POINT', 2, 'COMMA')}"></span></p>
+                        
+                        <form th:action="@{/orders/remove}" method="POST" style="display:inline;">
+                            <input type="hidden" name="productId" th:value="${detail.product.id}">
+                            <button type="submit" class="btn-remove">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <h4>Resumen del Pedido</h4>
+                <div class="summary-line">
+                    <span>Productos (ítems):</span>
+                    <span th:text="${#numbers.formatDecimal(order.totalProducts, 0, 'POINT', 2, 'COMMA')}">ARS$ 0,00</span>
+                </div>
+                <div class="summary-line installation-status">
+                    <span>Instalación (Fijo):</span>
+                    <span th:text="${#numbers.formatDecimal(installationPrice, 0, 'POINT', 2, 'COMMA')}">ARS$ 0,00</span>
+                </div>
+                
+                <div class="summary-line total">
+                    <strong>TOTAL FINAL:</strong>
+                    <strong>ARS$ <span th:text="${#numbers.formatDecimal(order.total, 0, 'POINT', 2, 'COMMA')}"></span></strong>
+                </div>
+
+                <div class="summary-actions">
+
+                    <div th:if="${order.installation == null}">
+                        <a th:href="@{/orders/installation/schedule}" class="btn-secondary">
+                            <i class="fas fa-tools"></i> Solicitar Instalación
+                        </a>
+                    </div>
+
+                    <div th:if="${order.installation != null}" class="installation-scheduled-box">
+                        <p style="margin-bottom: 5px; font-weight: bold; color: green;"><i class="fas fa-check-circle"></i> Instalación Programada</p>
+                        
+                        <form th:action="@{/orders/installation/cancel}" method="POST" style="margin-top: 10px;">
+                            <button type="submit" class="btn-cancel-link" onclick="return confirm('¿Está seguro de que desea cancelar la instalación programada?');">
+                                <i class="fas fa-times-circle"></i> Quitar Instalación
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <form th:action="@{/orders/checkout}" method="POST">
+                        <button type="submit" class="btn-primary" 
+                                th:disabled="${order.orderDetails.isEmpty()}">
+                            <i class="fas fa-shopping-cart"></i> Finalizar Compra
+                        </button>
+                    </form>
+                       
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+    
+</body>
+</html>

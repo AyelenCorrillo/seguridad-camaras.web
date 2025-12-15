@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Catálogo de Cámaras</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> 
+</head>
+<body>
+    
+    <div th:replace="fragments/header :: main-header"></div>
+    
+    <div class="catalogo-contenedor">
+        
+        <p th:if="${errorMessage}" class="alert-error" th:text="${errorMessage}"></p>
+        <p th:if="${successMessage}" class="alert-success" th:text="${successMessage}"></p>
+
+        <div class="barra-busqueda-orden">
+            <form th:action="@{/catalogo}" method="get" class="search-form">
+                <input type="hidden" name="tipo" th:value="${tipoActual}">
+                <input type="hidden" name="brand" th:value="${brandActual}">
+                <input type="hidden" name="minPrice" th:value="${minPriceActual}">
+                <input type="hidden" name="maxPrice" th:value="${maxPriceActual}">
+                <input type="hidden" name="ordenar" th:value="${ordenarActual}">           
+                <input type="text" name="busqueda" placeholder="Buscar productos..." th:value="${busquedaActual}">
+                <button type="submit" class="btn-buscar">Buscar</button>
+            </form>
+
+            <div class="ordenamiento">
+                <label for="ordenar">Ordenar por:</label>
+                <form th:action="@{/catalogo}" method="get" onchange="this.submit()">
+                    <input type="hidden" name="busqueda" th:value="${busquedaActual}">
+                    <input type="hidden" name="tipo" th:value="${tipoActual}"> 
+                    <input type="hidden" name="brand" th:value="${brandActual}"> 
+                    <input type="hidden" name="minPrice" th:value="${minPriceActual}"> 
+                    <input type="hidden" name="maxPrice" th:value="${maxPriceActual}"> 
+
+                    <select id="ordenar" name="ordenar">
+                        <option value="relevancia" th:selected="${ordenarActual == 'relevancia' or ordenarActual == null}">-- Relevancia --</option>
+                        <option value="precio-asc" th:selected="${ordenarActual == 'precio-asc'}">Precio (Menor a Mayor)</option>
+                        <option value="precio-desc" th:selected="${ordenarActual == 'precio-desc'}">Precio (Mayor a Menor)</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        
+        <div class="catalogo-layout">
+            
+            <div th:replace="fragments/sidebar-filters :: sidebar-filters"></div>
+                 
+
+            <div class="productos-main">
+                
+                <p>Mostrando <span th:text="${products.size()}">0</span> resultados.</p>
+
+                <div th:if="${products.isEmpty()}">
+                    <p class="no-resultados">No se encontraron productos con los filtros aplicados.</p>
+                </div>
+                
+                <div class="productos-grid" th:unless="${products.isEmpty()}">
+                    
+                    <div th:each="product : ${products}" class="producto-card">
+                        
+                        <a th:href="@{/catalogo/{id}(id=${product.id})}" class="product-link">
+                            <img th:src="@{/images/products/{id}.jpg(id=${product.id})}" th:alt="${product.name}" class="producto-imagen">
+                        </a>
+                        
+                        <div class="producto-cuerpo">
+                            <p class="producto-marca" th:text="${product.brand}"></p>
+                            <h3 class="producto-titulo"><a th:href="@{/catalogo/{id}(id=${product.id})}" th:text="${product.name}" class="title-link"></a></h3>
+                            
+                            <div class="producto-specs">
+                                <span class="spec-item" title="Conectividad"><i class="fas fa-network-wired"></i> <span th:text="${product.type}">IP</span></span>
+                                <span class="spec-item" title="Stock"><i class="fas fa-box"></i> <span th:text="${product.stock > 0 ? 'En Stock' : 'Sin Stock'}"></span></span>
+                            </div>
+
+                            <div class="producto-footer">
+                                <p class="producto-precio">
+                                   ARS$ <span th:text="${#numbers.formatDecimal(product.unitPrice, 0, 'POINT', 2, 'COMMA')}"></span>
+                                </p>
+                                
+                                <div sec:authorize="isAuthenticated()">
+                                    <form th:action="@{/orders/add}" method="POST">
+                                        <input type="hidden" name="productId" th:value="${product.id}">
+                                        
+                                        <label for="quantity">Kit de:</label>
+                                        <select name="quantity" required style="width: 80px; padding: 5px;">
+                                            <option value="2">x2</option>
+                                            <option value="4">x4</option>
+                                            <option value="6">x6</option>
+                                            <option value="8">x8</option>
+                                        </select>
+                                        
+                                        <button type="submit" class="btn-carrito" th:disabled="${product.stock <= 0}">
+                                            🛒 Añadir
+                                        </button>
+                                    </form>
+                                </div>
+                                <div sec:authorize="!isAuthenticated()">
+                                    <p style="font-size: 0.9em; color: gray;"><a th:href="@{/login}">Inicia sesión</a> para comprar.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </body>
+</html>
