@@ -1,4 +1,4 @@
-#  E-COMMERCE DE SEGURIDAD (Spring Boot & Thymeleaf)
+# E-COMMERCE DE SEGURIDAD (Spring Boot & Thymeleaf)
 
 Este proyecto es una aplicación que simula una tienda en línea especializada en la venta e instalación de sistemas de cámaras de seguridad. Implementa un flujo de negocio completo desde la navegación del catálogo hasta la finalización del pedido con servicios asociados.
 
